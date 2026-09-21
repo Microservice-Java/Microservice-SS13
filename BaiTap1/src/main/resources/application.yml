@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: storex-bff
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      voucherCircuitBreaker:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+marketing-service:
+  url: http://localhost:9999/api/v1/vouchers/flash
