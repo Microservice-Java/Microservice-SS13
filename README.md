@@ -18,6 +18,13 @@ Repository lưu trữ bài tập thực hành về **Resilience4j Circuit Breake
 
 ---
 
+### [Bài Tập Thực Hành 3: Thử Lửa Với Trạng Thái Half-Open Và Time-Based](./BaiTap3)
+- **Mục tiêu**: Mô phỏng hợp đồng SLA tính phí vận chuyển `Shipping-Service` theo cửa sổ `TIME_BASED`.
+- **Giải pháp**: Cấu hình `slidingWindowType: TIME_BASED`, `slidingWindowSize: 30`, `waitDurationInOpenState: 20s`, `permittedNumberOfCallsInHalfOpenState: 3`, và `automaticTransitionFromOpenToHalfOpenEnabled: true`.
+- **Báo cáo chi tiết**: [BaoCao_BaiTap3.md](./BaiTap3/BaoCao_BaiTap3.md)
+
+---
+
 ## Hướng dẫn chạy và kiểm thử
 
 ### Bài Tập 1
@@ -29,5 +36,11 @@ cd BaiTap1
 ### Bài Tập 2
 ```bash
 cd BaiTap2
+./gradlew test
+```
+
+### Bài Tập 3
+```bash
+cd BaiTap3
 ./gradlew test
 ```

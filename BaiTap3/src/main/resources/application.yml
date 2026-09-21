@@ -1,0 +1,28 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: checkout-shipping-service
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      shippingClient:
+        # Cửa sổ trượt theo thời gian (TIME_BASED)
+        slidingWindowType: TIME_BASED
+        # Kích thước cửa sổ trượt (30 giây)
+        slidingWindowSize: 30
+        # Số cuộc gọi tối thiểu để tính toán tỷ lệ lỗi (3 request)
+        minimumNumberOfCalls: 3
+        # Ngưỡng tỷ lệ lỗi ngắt mạch (50%)
+        failureRateThreshold: 50
+        # Thời gian ngưng gọi khi sập (Open to Half-Open: 20 giây theo SLA)
+        waitDurationInOpenState: 20s
+        # Số lượng request trinh sát cho phép ở trạng thái HALF_OPEN (3 request theo SLA)
+        permittedNumberOfCallsInHalfOpenState: 3
+        # Tự động hé cửa chuyển sang HALF_OPEN khi hết 20s mà không cần request mồi
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+shipping-service:
+  url: http://shipping-service/api/v1/shipping/calculate
