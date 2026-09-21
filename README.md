@@ -1,6 +1,6 @@
 # Microservice SS13 - Advanced Resilience Patterns & Circuit Breakers
 
-Repository lưu trữ bài tập thực hành về **Resilience4j Circuit Breaker & Fallback Patterns** cho Microservice Architecture.
+Repository lưu trữ bài tập thực hành về **Resilience4j Circuit Breaker, RateLimiter, Bulkhead & Fallback Patterns** cho Microservice Architecture.
 
 ## Danh sách bài tập
 
@@ -25,6 +25,15 @@ Repository lưu trữ bài tập thực hành về **Resilience4j Circuit Breake
 
 ---
 
+### [Bài Tập Thực Hành 4: Chống Bão Request Với RateLimiter Và Bulkhead](./BaiTap4)
+- **Mục tiêu**: Giới hạn tần suất gọi API báo cáo Excel theo thời gian (`@RateLimiter`) và giới hạn luồng xử lý đồng thời (`@Bulkhead`).
+- **Giải pháp**:
+  - `@RateLimiter(name = "reportRateLimiter")`: Tối đa 2 req / 60s / user $\rightarrow$ Trả về **HTTP 429** *"Bạn thao tác quá nhanh, vui lòng thử lại sau"*.
+  - `@Bulkhead(name = "reportBulkhead")`: Tối đa 5 luồng xử lý đồng thời $\rightarrow$ Trả về **HTTP 503** *"Server đang quá tải quá trình kết xuất"*.
+- **Báo cáo chi tiết**: [BaoCao_BaiTap4.md](./BaiTap4/BaoCao_BaiTap4.md)
+
+---
+
 ## Hướng dẫn chạy và kiểm thử
 
 ### Bài Tập 1
@@ -42,5 +51,11 @@ cd BaiTap2
 ### Bài Tập 3
 ```bash
 cd BaiTap3
+./gradlew test
+```
+
+### Bài Tập 4
+```bash
+cd BaiTap4
 ./gradlew test
 ```

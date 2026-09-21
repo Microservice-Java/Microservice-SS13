@@ -1,0 +1,25 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: report-service
+
+resilience4j:
+  ratelimiter:
+    instances:
+      reportRateLimiter:
+        # Mỗi user được phép tải tối đa 2 báo cáo
+        limitForPeriod: 2
+        # Trong khoảng thời gian 60 giây (1 phút)
+        limitRefreshPeriod: 60s
+        # Thời gian chờ cấp phép: 0ms (Từ chối lập tức nếu quá 2 req/phút)
+        timeoutDuration: 0ms
+
+  bulkhead:
+    instances:
+      reportBulkhead:
+        # Số lượng luồng xử lý xuất Excel đồng thời tối đa (5 luồng)
+        maxConcurrentCalls: 5
+        # Thời gian chờ khi đầy luồng: 0ms (Từ chối lập tức luồng thứ 6)
+        maxWaitDuration: 0ms
