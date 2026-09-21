@@ -1,0 +1,36 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: checkout-ewallet-service
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      ewalletClient:
+        # Cửa sổ trượt dạng số lượng request (COUNT_BASED)
+        slidingWindowType: COUNT_BASED
+        # Kích thước cửa sổ trượt (10 request gần nhất)
+        slidingWindowSize: 10
+        # Số cuộc gọi tối thiểu để bắt đầu tính toán (5 request)
+        minimumNumberOfCalls: 5
+        # Ngưỡng tỷ lệ lỗi ngắt mạch (50%)
+        failureRateThreshold: 50
+        # Thời gian ngắt mạch (10 giây)
+        waitDurationInOpenState: 10s
+        # Số lượng request trinh sát khi HALF_OPEN
+        permittedNumberOfCallsInHalfOpenState: 3
+
+        # Lỗi nghiệp vụ bị phớt lờ (Khách hàng không đủ tiền -> Giữ Cầu dao CLOSED)
+        ignoreExceptions:
+          - com.storex.ewallet.exception.InsufficientBalanceException
+
+        # Lỗi hệ thống ghi nhận tính tỷ lệ lỗi (Treo mạng / Timeout -> Mở mạch OPEN)
+        recordExceptions:
+          - java.util.concurrent.TimeoutException
+          - org.springframework.web.client.ResourceAccessException
+          - java.net.ConnectException
+
+ewallet-service:
+  url: http://ewallet-service/api/v1/ewallet/deduct
